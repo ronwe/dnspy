@@ -41,7 +41,7 @@ class LocalDNSHandler(BaseRequestHandler):
 		else:
 			for k,v in self.hosts.iteritems():
 				try:
-					m =  re.search(k + r'$' , domain);
+					m =  re.search('^' + k + '$' , domain);
 					if m:
 						configIp = v
 						#将由正则解析后的,保存至hosts中,以便下次再请求时直接通过 self.hosts[domain] 命中,不再走由正则解析的路线
@@ -70,7 +70,7 @@ class LocalDNSHandler(BaseRequestHandler):
 		if gl_remote_server != None:
 			#不同的域名,使用不同的DNS服务器去进行解析
 			for k,v in gl_remote_server.iteritems():
-				m =  re.search(k + r'$' , domain);
+				m =  re.search(k + '$' , domain);
 				if m:
 					remote_server = v
 					break
