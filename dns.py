@@ -32,7 +32,7 @@ class LocalDNSHandler(BaseRequestHandler):
 		domain = self.getDomain(data)
 		configIp = None
 
-		#¼Ó¸öËø,ÒÔ·ÀÖ¹ÔÚ¸øhostsÔö¼ÓÄÚÈİÊ±,´¥·¢ RuntimeError: dictionary changed size during iteration
+		#åŠ ä¸ªé”,ä»¥é˜²æ­¢åœ¨ç»™hostså¢åŠ å†…å®¹æ—¶,è§¦å‘ RuntimeError: dictionary changed size during iteration
 		mutex.acquire()
 		if '.in-addr.arpa' == domain[-13:]:
 			configIp = '0.0.0.0'
@@ -41,10 +41,10 @@ class LocalDNSHandler(BaseRequestHandler):
 		else:
 			for k,v in self.hosts.iteritems():
 				try:
-					m =  re.search('^' + k + '$' , domain);
+					m =  re.search(r'^' + k + r'$' , domain);
 					if m:
 						configIp = v
-						#½«ÓÉÕıÔò½âÎöºóµÄ,±£´æÖÁhostsÖĞ,ÒÔ±ãÏÂ´ÎÔÙÇëÇóÊ±Ö±½ÓÍ¨¹ı self.hosts[domain] ÃüÖĞ,²»ÔÙ×ßÓÉÕıÔò½âÎöµÄÂ·Ïß
+						#å°†ç”±æ­£åˆ™è§£æåçš„,ä¿å­˜è‡³hostsä¸­,ä»¥ä¾¿ä¸‹æ¬¡å†è¯·æ±‚æ—¶ç›´æ¥é€šè¿‡ self.hosts[domain] å‘½ä¸­,ä¸å†èµ°ç”±æ­£åˆ™è§£æçš„è·¯çº¿
 						self.hosts[domain] = v
 						break
 				except Exception as err:
@@ -56,7 +56,7 @@ class LocalDNSHandler(BaseRequestHandler):
 			rspdata = self.respuesta(configIp, data);
 		else:
 			rspdata = self._getResponse(domain, data)
-			#»ñÈ¡Êı¾İ³ö´íÊ±,·µ»Ø 0.0.0.0 µÄIP
+			#è·å–æ•°æ®å‡ºé”™æ—¶,è¿”å› 0.0.0.0 çš„IP
 			if rspdata == 1:
 				rspdata = self.respuesta('0.0.0.0', data);
 		socket.sendto(rspdata, self.client_address)
@@ -68,9 +68,9 @@ class LocalDNSHandler(BaseRequestHandler):
 
 		global gl_remote_server
 		if gl_remote_server != None:
-			#²»Í¬µÄÓòÃû,Ê¹ÓÃ²»Í¬µÄDNS·şÎñÆ÷È¥½øĞĞ½âÎö
+			#ä¸åŒçš„åŸŸå,ä½¿ç”¨ä¸åŒçš„DNSæœåŠ¡å™¨å»è¿›è¡Œè§£æ
 			for k,v in gl_remote_server.iteritems():
-				m =  re.search(k + '$' , domain);
+				m =  re.search(k + r'$' , domain);
 				if m:
 					remote_server = v
 					break
